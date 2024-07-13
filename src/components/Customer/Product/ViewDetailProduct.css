@@ -1,0 +1,5 @@
+.demo-view-detail-product {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+}

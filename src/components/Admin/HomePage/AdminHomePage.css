@@ -1,0 +1,7 @@
+.admin-main-content {
+    margin-left: 20%;
+    width: calc(100% - 20%);
+    padding: 20px;
+    background-color: #f8f9fa;
+    min-height: 100vh;
+}

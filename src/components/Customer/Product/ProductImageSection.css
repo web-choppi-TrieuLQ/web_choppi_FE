@@ -1,0 +1,37 @@
+.product-image-section {
+    margin: 20px;
+}
+.flex-column {
+    display: flex;
+    flex-direction: column;
+}
+.main-image-container {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 20px;
+}
+.main-product-image {
+    width: 100%;
+    max-width: 500px;
+}
+.thumbnail-container {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+}
+.thumbnail-image {
+    width: 60px;
+    height: 60px;
+}
+.share-buttons {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    margin-top: 10px;
+}
+.share-button {
+    padding: 10px;
+    border: none;
+    background-color: #f0f0f0;
+    cursor: pointer;
+}
