@@ -35,17 +35,40 @@ export const findAll = async () => {
 
 export const create = async (product, file) => {
     try {
+        console.log("product Json: " + JSON.stringify(product));
         // Tạo một đối tượng FormData để chứa dữ liệu sản phẩm và file
         const formData = new FormData();
         formData.append('product', JSON.stringify(product)); // Chuyển đổi dữ liệu sản phẩm thành chuỗi JSON và đưa vào FormData
         formData.append('file', file); // Đưa file vào FormData
 
         // Gửi request sử dụng FormData
-        await axiosInstance.post(url, formData);
+        await axiosInstance.post(url, formData, {
+            headers: {
+                'Content-Type': 'multipart/form-data'
+            }
+        });
     } catch (e) {
         console.log(e)
     }
 }
+
+// export const create = async (product, file) => {
+//     try {
+//         // Tạo một đối tượng FormData để chứa dữ liệu sản phẩm và file
+//         const formData = new FormData();
+//         formData.append('product', new Blob([JSON.stringify(product)], { type: 'application/json' }));
+//         formData.append('file', file);
+//
+//         // Gửi request sử dụng FormData
+//         await axiosInstance.post(url, formData, {
+//             headers: {
+//                 'Content-Type': 'multipart/form-data'
+//             }
+//         });
+//     } catch (e) {
+//         console.log(e);
+//     }
+// }
 
 export const createProduct = async (product, file) => {
     try {

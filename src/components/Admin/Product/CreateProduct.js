@@ -7,7 +7,6 @@ import * as productService from '../../../Service/ProductService'
 const init = {
     productName: "productName",
     price: "500",
-    image: null,
     category: ""
 };
 export function CreateProduct() {
@@ -75,7 +74,7 @@ export function CreateProduct() {
                                     <label htmlFor='image' className='form-label fw-bold'>Product Image</label>
 
                                     <Field type='file' onChange={handleFileChange}
-                                           className='form-control' id='image' name="image"/>
+                                           className='form-control'/>
                                     <ErrorMessage name="image" component="span" style={{color: "red"}}></ErrorMessage>
                                 </div>
 
