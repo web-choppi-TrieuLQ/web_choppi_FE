@@ -1,17 +1,19 @@
 import {ErrorMessage, Field, Form, Formik} from "formik";
 import  React, {useEffect, useRef, useState} from "react";
-import {Link} from "react-router-dom";
+import {Link, useNavigate} from "react-router-dom";
 import * as categoryService from '../../../Service/CategoryService'
 import * as productService from '../../../Service/ProductService'
+import Swal from 'sweetalert2';
 
 const init = {
     productName: "productName",
     price: "500",
-    category: ""
+    categoryId: 0
 };
 export function CreateProduct() {
+    const navigate = useNavigate();
     const [categories, setCategories] = useState([]);
-    const fileInputRef = useRef(null);
+    // const fileInputRef = useRef(null);
     const [selectFile, setSelectFile] = useState(null);
 
     useEffect(() => {
@@ -29,18 +31,32 @@ export function CreateProduct() {
         }
     }
     const createProduct = async (product) => {
+        product.categoryId = Number(product.categoryId);
         console.log("product before try catch to mapping data");
         console.log(product);
 
         // Convert category to JSON
-        product.category = JSON.parse(product.category);
+        // product.category = JSON.parse(product.category);
 
         try {
             await productService.create(product, selectFile)
             console.log("product after try catch to mapping data");
             console.log(product);
+
+            await Swal.fire({
+                title: "Success!",
+                text: "Create New Product Success!",
+                icon: "success"
+            });
+
+            navigate("/admin/product/list");
         } catch (e) {
             console.log(e)
+            Swal.fire({
+                title: "Error!",
+                text: "Create New Product Fail => Please check again!",
+                icon: "error"
+            });
         }
     };
     const handleFileChange = (event) => {
@@ -73,7 +89,7 @@ export function CreateProduct() {
                                 <div className='mb-3'>
                                     <label htmlFor='image' className='form-label fw-bold'>Product Image</label>
 
-                                    <Field type='file' onChange={handleFileChange}
+                                    <input type='file' onChange={handleFileChange}
                                            className='form-control'/>
                                     <ErrorMessage name="image" component="span" style={{color: "red"}}></ErrorMessage>
                                 </div>
@@ -84,13 +100,14 @@ export function CreateProduct() {
                                     </label>
                                     <Field
                                         className='form-select'
-                                        id='category'
-                                        name='category'
+                                        id='categoryId'
+                                        name='categoryId'
                                         as="select"
                                     >
                                         <option value="" disabled>Select Categories</option>
                                         {categories?.map((category) => (
-                                            <option key={category.categoryId} value={JSON.stringify(category)}>
+                                            // <option key={category.categoryId} value={JSON.stringify(category)}>
+                                            <option key={category.categoryId} value={category.categoryId}>
                                                 {category.categoryName}
                                             </option>
                                         ))}
