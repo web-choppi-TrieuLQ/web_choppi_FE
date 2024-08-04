@@ -1,13 +1,16 @@
-import {Link} from "react-router-dom";
+import {Link, useLocation} from "react-router-dom";
 import React from "react";
 import img1 from '../../static/images/banner/c4.jpg'
 import img2 from '../../static/images/banner/c5.jpg'
 import img3 from '../../static/images/banner/c6.jpg'
 
-export const Header = ({onLogout}) => {
+export const Header = ({onLogout, isAuthenticated}) => {
+    const location = useLocation();
     const handleLogout = async () => {
         onLogout();
     };
+
+    const isActive = (path) => location.pathname === path;
     return (
         <>
             <div className="hero_area">
@@ -25,45 +28,48 @@ export const Header = ({onLogout}) => {
                         </button>
 
                         <div className="collapse navbar-collapse" id="navbarSupportedContent">
-                            <ul className="navbar-nav  ">
-                                <li className="nav-item active">
+                            <ul className="navbar-nav">
+                                <li className={`nav-item ${isActive('/') ? 'active' : ''}`}>
                                     <Link className="nav-link" to="/">Home <span
                                         className="sr-only">(current)</span></Link>
                                 </li>
-                                <li className="nav-item">
+                                <li className={`nav-item ${isActive('/home/latestProduct') ? 'active' : ''}`}>
                                     <Link className="nav-link" to="/home/latestProduct">
                                         Shop
                                     </Link>
                                 </li>
-                                <li className="nav-item">
+                                <li className={`nav-item ${isActive('/home/whyUs') ? 'active' : ''}`}>
                                     <Link className="nav-link" to="/home/whyUs">
                                         Why Us
                                     </Link>
                                 </li>
-                                <li className="nav-item">
+                                <li className={`nav-item ${isActive('/home/testimonial') ? 'active' : ''}`}>
                                     <Link className="nav-link" to="/home/testimonial">
                                         Testimonial
                                     </Link>
                                 </li>
-                                <li className="nav-item">
+                                <li className={`nav-item ${isActive('/home/contactUs') ? 'active' : ''}`}>
                                     <Link className="nav-link" to="/home/contactUs">Contact Us</Link>
                                 </li>
                             </ul>
                             <div className="user_option">
-                                <Link to="/login">
-                                    <i className="fa fa-user" aria-hidden="true"></i>
-                                    <span>
-                                        Login
-                                    </span>
-                                </Link>
-                                <button className="btn btn-link mr-2" onClick={handleLogout}>
-                                    <i className="fa fa-user mr-1" aria-hidden="true"></i>
-                                    <span>Logout</span>
-                                </button>
-                                <Link to="/cart">
-                                    <i className="fa fa-shopping-bag" aria-hidden="true"></i>
-                                </Link>
-                                <form className="form-inline ">
+                                {isAuthenticated ? (
+                                    <>
+                                        <button className="btn btn-link mr-2" onClick={handleLogout}>
+                                            <i className="fa fa-user mr-1" aria-hidden="true"></i>
+                                            <span>Logout</span>
+                                        </button>
+                                        <Link to="/cart">
+                                            <i className="fa fa-shopping-bag" aria-hidden="true"></i>
+                                        </Link>
+                                    </>
+                                ) : (
+                                    <Link to="/login">
+                                        <i className="fa fa-user" aria-hidden="true"></i>
+                                        <span>Login</span>
+                                    </Link>
+                                )}
+                                <form className="form-inline">
                                     <button className="btn nav_search-btn" type="submit">
                                         <i className="fa fa-search" aria-hidden="true"></i>
                                     </button>
@@ -89,7 +95,12 @@ export const Header = ({onLogout}) => {
                                                     </h1>
                                                     <p>
                                                         <p>
-                                                            At CHOPPI SHOP, we believe in the magic of gift-giving. Whether you're searching for the perfect present for a loved one or treating yourself to something special, we've got you covered. Our curated collection features a diverse range of handpicked items, from stylish accessories to delightful trinkets.
+                                                            At CHOPPI SHOP, we believe in the magic of gift-giving.
+                                                            Whether you're searching for the perfect present for a loved
+                                                            one or treating yourself to something special, we've got you
+                                                            covered. Our curated collection features a diverse range of
+                                                            handpicked items, from stylish accessories to delightful
+                                                            trinkets.
                                                         </p>
                                                         <p>
                                                             What sets us apart? It's our commitment to quality, creativity, and customer satisfaction. Each product in our store is carefully selected for its craftsmanship, uniqueness, and appeal. We strive to bring you not just products, but experiences that make every moment memorable.

@@ -8,7 +8,7 @@ import axios from "axios";
 import { jwtDecode } from 'jwt-decode';
 
 
-export const Login = ({setUserRole}) =>  {
+export const Login = ({setUserRole, setIsLoggedIn}) =>  {
     const navigate = useNavigate();
 
     const initialValues = {
@@ -59,6 +59,7 @@ export const Login = ({setUserRole}) =>  {
                     navigate('/admin/home');
                 } else {
                     // Chuyển hướng đến trang người dùng
+                    setIsLoggedIn(true);
                     navigate('/home/latestProduct');
                 }
             }

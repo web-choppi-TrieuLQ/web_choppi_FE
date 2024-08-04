@@ -2,9 +2,7 @@ import './App.css';
 import {ToastContainer} from "react-toastify";
 import {Route, Routes, useNavigate} from "react-router-dom";
 import {HomePage} from "./components/HomePage/HomePage";
-import {ProductList} from "./components/Admin/Product/ProductList";
 import {LatestProduct} from "./components/HomePage/LatestProduct";
-import {CreateProduct} from "./components/Admin/Product/CreateProduct";
 import {Header} from "./components/HomePage/Header";
 import {Footer} from "./components/HomePage/Footer";
 import {WhyUs} from "./components/HomePage/WhyUs";
@@ -19,21 +17,32 @@ import {Payment} from "./components/Payment/Payment";
 import {ProductListCustomer} from "./components/Customer/Product/ProductListCustomer";
 import {ViewDetailProduct} from "./components/Customer/Product/ViewDetailProduct";
 import {jwtDecode} from "jwt-decode";
-import Sidebar from "./components/Admin/HomePage/Sidebar";
-import Dashboard from "./components/Admin/HomePage/Dashboard";
 import * as authenticateService from "./Service/AuthenticateService";
+import {AdminPage} from "./components/Admin/AdminPage";
 
 
 function App() {
     const navigate = useNavigate();
     const [userRole, setUserRole] = useState('');
+    const [isLoggedIn, setIsLoggedIn] = useState(!!localStorage.getItem("token"));
+
+    useEffect(() => {
+        const checkLoggedIn = () => {
+            setIsLoggedIn(!!localStorage.getItem("token"));
+        };
+
+        checkLoggedIn();
+    }, []);
 
     useEffect(() => {
         // Lấy thông tin từ localStorage khi component được load
         if (localStorage.getItem('token')) {
             const decodedToken = jwtDecode(localStorage.getItem('token'));
             setUserRole(decodedToken.scope);
+        } else {
+            setUserRole('');
         }
+        console.log("isLoggedIn: ", isLoggedIn)
     }, []);
 
     const handleLogout = async () => {
@@ -45,6 +54,7 @@ function App() {
             // Xóa token khỏi localStorage
             localStorage.removeItem("token");
             setUserRole('');
+            setIsLoggedIn(!isLoggedIn);
             navigate("/")
         } catch (e) {
             console.log(e)
@@ -58,21 +68,11 @@ function App() {
             {
                 userRole === 'ADMIN' ?
                     (
-                        <div>
-                            <Sidebar onLogout={handleLogout}/>/>
-                            <div className="admin-main-content">
-                                <Routes>
-                                    {/*admin*/}
-                                    <Route path="/admin/home" element={<Dashboard/>}></Route>
-                                    <Route path="/admin/product/list" element={<ProductList/>}></Route>
-                                    <Route path="/admin/product/create" element={<CreateProduct/>}></Route>
-                                </Routes>
-                            </div>
-                        </div>
+                        <AdminPage onLogout={handleLogout}/>
                     ) :
                     (
                         <div>
-                            <Header onLogout={handleLogout}/>
+                            <Header onLogout={handleLogout} isAuthenticated={isLoggedIn}/>
                             <Routes>
                                 {/*guest*/}
                                 <Route path="/" element={<HomePage/>}></Route>
@@ -80,7 +80,7 @@ function App() {
                                 <Route path="/home/whyUs" element={<WhyUs/>}></Route>
                                 <Route path="/home/testimonial" element={<Testimonial/>}></Route>
                                 <Route path="/home/contactUs" element={<ContactUs/>}></Route>
-                                <Route path="/login" element={<Login setUserRole={setUserRole}/>}></Route>
+                                <Route path="/login" element={<Login setUserRole={setUserRole} setIsLoggedIn={setIsLoggedIn}/>}></Route>
                                 <Route path="/register" element={<Register/>}></Route>
 
 

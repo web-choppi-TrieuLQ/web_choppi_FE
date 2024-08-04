@@ -7,18 +7,18 @@ import {Testimonial} from "./Testimonial";
 import {ContactUs} from "./ContactUs";
 
 export function HomePage() {
-    const [isLoggedIn, setIsLoggedIn] = useState(!!localStorage.getItem("token"));
+    // const [isLoggedIn, setIsLoggedIn] = useState(!!localStorage.getItem("token"));
 
-    useEffect(() => {
-        const checkLoggedIn = () => {
-            setIsLoggedIn(!!localStorage.getItem("token"));
-        };
-
-        checkLoggedIn();
-    }, []);
+    // useEffect(() => {
+    //     const checkLoggedIn = () => {
+    //         setIsLoggedIn(!!localStorage.getItem("token"));
+    //     };
+    //
+    //     checkLoggedIn();
+    // }, []);
     return (
         <div>
-            {isLoggedIn ? (
+            {/*{isLoggedIn ? (*/}
                 <>
                     <LatestProduct/>
                     <BestSale/>
@@ -27,9 +27,9 @@ export function HomePage() {
                     <Testimonial/>
                     <ContactUs/>
                 </>
-            ) : (
-                <p>Please login to view this content.</p>
-            )}
+            {/*) : (*/}
+            {/*    <p>Please login to view this content.</p>*/}
+            {/*)}*/}
         </div>
     )
 }
